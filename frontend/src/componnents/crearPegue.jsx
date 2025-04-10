@@ -1,6 +1,8 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { toast, Toaster } from "sonner";
+import './CrearPegue.css';
+
 
 function CrearPegue() {
   const [formData, setFormData] = useState({
@@ -8,7 +10,7 @@ function CrearPegue() {
     dueño: "",
     direccion: "",
     codigo: "",
-    pagos: "",
+    pago: "",
   });
 
   const navigate = useNavigate();
@@ -45,7 +47,7 @@ function CrearPegue() {
             dueño: "",
             direccion: "",
             codigo: "",
-            pagos: "",
+            pago: "",
         })
 
       } else {
@@ -56,6 +58,10 @@ function CrearPegue() {
       toast.error("Hubo un error en la conexión");
     }
   };
+
+  const handleLis = () => {
+    navigate("/")
+  } 
 
   return (
     <div className="form-container">
@@ -100,16 +106,18 @@ function CrearPegue() {
 
         <input
           type="text"
-          name="pagos"
-          value={formData.pagos}
+          name="pago"
+          value={formData.pago}
           onChange={handleChange}
           placeholder="Pagos realizados"
           className="input"
         />
 
-        <button type="submit" className="btn">
-          Crear
-        </button>
+        <div className="button-group">
+          <button className="btn" onClick={handleSubmit}>Crear</button>
+          <button className="btn2" onClick={handleLis}>Volver</button>
+        </div>
+
       </form>
     </div>
   );
