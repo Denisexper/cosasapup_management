@@ -26,7 +26,6 @@ const peguesSchema = new mongoose.Schema({
 
     pagos: {
         type: String,
-        unique: true,
         trim: true
     }
   });

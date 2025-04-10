@@ -6,6 +6,7 @@ const app = express.Router();
 const controllersPegues = new peguesControllers;
 
 app.post("/crear-pegue", controllersPegues.CrearPegue);
+app.get("/obtener-pegues", controllersPegues.ObtenerPegues);
 
 
 
