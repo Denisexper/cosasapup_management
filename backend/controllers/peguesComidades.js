@@ -1,14 +1,14 @@
 import pegues from "../models/peguesComunidades.js";
-import pegues from "../models/peguesComunidades.js";
+
 
 class peguesControllers {
 
     async CrearPegue  (req,res)  {
         try {
             
-            const { comunidad, dueño, direccion, codigo, pago } = req.body;
+            const { comunidad, dueño, direccion, codigo, pagos } = req.body;
 
-            const pegue = await pegues.create({comunidad, dueño, direccion, codigo, pago});
+            const pegue = await pegues.create({comunidad, dueño, direccion, codigo, pagos});
 
             res.status(200).send({
                 message: "Registro creado correctamente",
