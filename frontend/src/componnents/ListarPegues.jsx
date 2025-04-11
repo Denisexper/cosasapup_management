@@ -4,11 +4,13 @@ import { Toaster, toast } from 'sonner'
 import { useNavigate } from 'react-router-dom';
 import { generarPDF } from '../reportes/peguesReportes.jsx';
 
+
 function ListarPegues () {
   const [pegues, setPegues] = useState([]);
-  const navigate = useNavigate();
+  const [comunidadFiltro, setComunidadFiltro] = useState('');
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 30;
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchPegues = async () => {
@@ -32,31 +34,56 @@ function ListarPegues () {
 
   const handleChange = () => {
     navigate("/crear")
-  }
-  // Calcular qué items mostrar en la página actual
+  };
+
+  // Filtrar pegues por comunidad si se seleccionó alguna
+  const peguesFiltrados = comunidadFiltro
+    ? pegues.filter(p => p.comunidad === comunidadFiltro)
+    : pegues;
+
+  // Calcular paginación
   const indexOfLastItem = currentPage * itemsPerPage;
   const indexOfFirstItem = indexOfLastItem - itemsPerPage;
-  const currentItems = pegues.slice(indexOfFirstItem, indexOfLastItem);
-  const totalPages = Math.ceil(pegues.length / itemsPerPage);
+  const currentItems = peguesFiltrados.slice(indexOfFirstItem, indexOfLastItem);
+  const totalPages = Math.ceil(peguesFiltrados.length / itemsPerPage);
 
   return (
     <div className="table-container">
       <Toaster />
       <h1 className="title">Listado de Pegues</h1>
-        <div className="button-group">
-            <button className="btn" onClick={handleChange}>Crear Registro</button>
-            <button className="btn2" onClick={() => generarPDF(pegues)}>Generar Reporte</button>
-        </div>
+
+      <div className="button-group">
+        <button className="btn" onClick={handleChange}>Crear Registro</button>
+        <button className="btn2" onClick={() => generarPDF(peguesFiltrados)}>Generar Reporte</button>
+      </div>
+
+      <div className="filter-container">
+        <label htmlFor="comunidad-select">Seleccionar comunidad:</label>
+        <select
+          id="comunidad-select"
+          value={comunidadFiltro}
+          onChange={(e) => {
+            setComunidadFiltro(e.target.value);
+            setCurrentPage(1); // Reiniciar a la primera página al filtrar
+          }}
+          className="input"
+        >
+          <option value="">Todas</option>
+          <option value="Zapatagua">Zapatagua</option>
+          <option value="El almidon">El almidon</option>
+          <option value="La Cajita">La Cajita</option>
+        </select>
+      </div>
 
       <table className="pegue-table">
         <thead>
           <tr>
             <th>#</th>
             <th>Comunidad</th>
-            <th>Dueño</th>
+            <th>Dueño Pegue</th>
             <th>Dirección</th>
-            <th>Código</th>
-            <th>Pago</th>
+            <th>Código Pegue</th>
+            <th>Pagos</th>
           </tr>
         </thead>
         <tbody>

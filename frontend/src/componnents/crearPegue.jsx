@@ -41,13 +41,13 @@ function CrearPegue() {
 
       if (response.ok) {
         toast.success("Registro creado con éxito");
-        
+
         setFormData({
-            comunidad: "",
-            dueño: "",
-            direccion: "",
-            codigo: "",
-            pago: "",
+          comunidad: "",
+          dueño: "",
+          direccion: "",
+          codigo: "",
+          pago: "",
         })
 
       } else {
@@ -61,21 +61,24 @@ function CrearPegue() {
 
   const handleLis = () => {
     navigate("/")
-  } 
+  }
 
   return (
     <div className="form-container">
       <Toaster />
       <h1>Crear nuevo registro</h1>
       <form onSubmit={handleSubmit} className="form">
-        <input
-          type="text"
+        <select
           name="comunidad"
           value={formData.comunidad}
           onChange={handleChange}
-          placeholder="Nombre Comunidad"
           className="input"
-        />
+        >
+          <option value="">Selecciona una comunidad</option>
+          <option value="Zapatagua">Zapatagua</option>
+          <option value="El almidon">El almidon</option>
+          <option value="La Cajita">La Cajita</option>
+        </select>
 
         <input
           type="text"
@@ -87,13 +90,18 @@ function CrearPegue() {
         />
 
         <input
-          type="text"
+          list="direcciones"
           name="direccion"
           value={formData.direccion}
           onChange={handleChange}
           placeholder="Dirección"
           className="input"
         />
+        <datalist id="direcciones">
+          <option value="Zapatagua" />
+          <option value="El almidon" />
+          <option value="La Cajita" />
+        </datalist>
 
         <input
           type="text"

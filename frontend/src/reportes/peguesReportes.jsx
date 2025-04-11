@@ -5,7 +5,7 @@ export const generarPDF = (todosPegues) => {
   const doc = new jsPDF();
 
   autoTable(doc, {
-    head: [['#', 'Comunidad', 'Dueño', 'Dirección', 'Código', 'Pago']],
+    head: [['#', 'Comunidad', 'Dueño Pegue', 'Dirección Dueño', 'Código Pegue', 'Pagos']],
     body: todosPegues.map((p, i) => [
       i + 1,
       p.comunidad,
