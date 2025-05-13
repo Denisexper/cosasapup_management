@@ -35,6 +35,10 @@ function ListarPegues () {
     navigate("/crear")
   };
 
+  const handleEditar = (id) => {
+    navigate(`/Editar/${id}`)
+  }
+
   const handleDelete = async (id) => {
     try {
       const response = await fetch(`http://localhost:3000/api/eliminar-pegue/${id}`, {
@@ -116,6 +120,12 @@ function ListarPegues () {
                   onClick={() => handleDelete(pegue._id)}
                 >
                   Eliminar
+                </button>
+                <button
+                className="btn-actualizar"
+                onClick={() => handleEditar(pegue._id)}
+                >
+                  Actualizar
                 </button>
               </td>
             </tr>
