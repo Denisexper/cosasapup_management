@@ -4,7 +4,6 @@ import { Toaster, toast } from 'sonner'
 import { useNavigate } from 'react-router-dom';
 import { generarPDF } from '../reportes/peguesReportes.jsx';
 
-
 function ListarPegues () {
   const [pegues, setPegues] = useState([]);
   const [comunidadFiltro, setComunidadFiltro] = useState('');
@@ -36,12 +35,27 @@ function ListarPegues () {
     navigate("/crear")
   };
 
-  // Filtrar pegues por comunidad si se seleccionó alguna
+  const handleDelete = async (id) => {
+    try {
+      const response = await fetch(`http://localhost:3000/api/eliminar-pegue/${id}`, {
+        method: "DELETE",
+      });
+      if (!response.ok) {
+        toast.error("Error eliminando registro");
+        return;
+      }
+      setPegues(pegues.filter(pegue => pegue._id !== id));
+      toast.success("Registro eliminado correctamente");
+    } catch (error) {
+      console.error("Error eliminando el registro", error);
+      toast.error("Error al eliminar");
+    }
+  };
+
   const peguesFiltrados = comunidadFiltro
     ? pegues.filter(p => p.comunidad === comunidadFiltro)
     : pegues;
 
-  // Calcular paginación
   const indexOfLastItem = currentPage * itemsPerPage;
   const indexOfFirstItem = indexOfLastItem - itemsPerPage;
   const currentItems = peguesFiltrados.slice(indexOfFirstItem, indexOfLastItem);
@@ -64,7 +78,7 @@ function ListarPegues () {
           value={comunidadFiltro}
           onChange={(e) => {
             setComunidadFiltro(e.target.value);
-            setCurrentPage(1); // Reiniciar a la primera página al filtrar
+            setCurrentPage(1);
           }}
           className="input"
         >
@@ -84,17 +98,26 @@ function ListarPegues () {
             <th>Dirección</th>
             <th>Código Pegue</th>
             <th>Pagos</th>
+            <th>Acciones</th>
           </tr>
         </thead>
         <tbody>
           {currentItems.map((pegue, index) => (
-            <tr key={index}>
+            <tr key={pegue._id}>
               <td>{indexOfFirstItem + index + 1}</td>
               <td>{pegue.comunidad}</td>
               <td>{pegue.dueño}</td>
               <td>{pegue.direccion}</td>
               <td>{pegue.codigo}</td>
               <td>{pegue.pago}</td>
+              <td>
+                <button
+                  className="btn-eliminar"
+                  onClick={() => handleDelete(pegue._id)}
+                >
+                  Eliminar
+                </button>
+              </td>
             </tr>
           ))}
         </tbody>

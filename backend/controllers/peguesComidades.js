@@ -87,7 +87,7 @@ class peguesControllers {
     async EliminarPegue (req, res) {
         try {
             
-            const { id } = req.param;
+            const { id } = req.params;
 
             const eliminado = await pegues.findByIdAndDelete(id)
 
