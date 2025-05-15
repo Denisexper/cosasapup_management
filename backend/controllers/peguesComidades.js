@@ -6,9 +6,9 @@ class peguesControllers {
     async CrearPegue  (req,res)  {
         try {
             
-            const { comunidad, dueño, direccion, codigo, pago } = req.body;
+            const { comunidad, dueño, direccion, estado, codigo, pago } = req.body;
 
-            const pegue = await pegues.create({comunidad, dueño, direccion, codigo, pago});
+            const pegue = await pegues.create({comunidad, dueño, direccion, estado, codigo, pago});
 
             res.status(200).send({
                 message: "Registro creado correctamente",
@@ -67,9 +67,9 @@ class peguesControllers {
             
             const { id } = req.params;
 
-            const { comunidad, dueño, direccion, codigo, pago } = req.body;
+            const { comunidad, dueño, direccion, estado, codigo, pago } = req.body;
 
-            const peActualizado = await pegues.findByIdAndUpdate(id, {comunidad, dueño, direccion, codigo, pago}, {new: true});
+            const peActualizado = await pegues.findByIdAndUpdate(id, {comunidad, dueño, direccion, estado, codigo, pago}, {new: true});
 
             res.status(200).send({
                 message: "Registro actualizado",

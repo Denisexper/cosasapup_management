@@ -11,6 +11,7 @@ function CrearPegue() {
     direccion: "",
     codigo: "",
     pago: "",
+    estado: ""
   });
 
   const navigate = useNavigate();
@@ -48,6 +49,7 @@ function CrearPegue() {
           direccion: "",
           codigo: "",
           pago: "",
+          estado: ""
         })
 
       } else {
@@ -120,6 +122,18 @@ function CrearPegue() {
           placeholder="Pagos realizados"
           className="input"
         />
+
+        <select
+          name="estado"
+          value={formData.estado}
+          onChange={handleChange}
+          className="input"
+        >
+          <option value="">Selecciona estado</option>
+          <option value={true}>Activo</option>
+          <option value={false}>Inactivo</option>
+        </select>
+
 
         <div className="button-group">
           <button className="btn" onClick={handleSubmit}>Crear</button>

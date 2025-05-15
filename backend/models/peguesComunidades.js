@@ -16,6 +16,11 @@ const peguesSchema = new mongoose.Schema({
       required: true,
       trim: true
     },
+    estado: {
+      type: Boolean,
+      default: true,
+      required: true,
+    },
     codigo: {
       type: String,
       required: true,
