@@ -115,7 +115,7 @@ function ListarPegues () {
               <td>{pegue.direccion}</td>
               <td>{pegue.codigo}</td>
               <td>{pegue.pago}</td>
-              <td>{pegue.estado}</td>
+              <td>{pegue.estado ? 'Activo' : 'Inactivo'}</td>
               <td>
                 <button
                   className="btn-eliminar"

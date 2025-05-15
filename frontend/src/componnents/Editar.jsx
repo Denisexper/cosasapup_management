@@ -10,7 +10,8 @@ function EditarPegue() {
     dueño: '',
     direccion: '',
     codigo: '',
-    pago: ''
+    pago: '',
+    estado: '',
   });
 
   useEffect(() => {
@@ -117,6 +118,25 @@ function EditarPegue() {
             className="input"
           />
         </label>
+
+        <label>
+          Estado:
+          <select
+            name="estado"
+            value={pegue.estado === true || pegue.estado === "true" ? "true" : "false"}
+            onChange={(e) =>
+              setPegue({
+                ...pegue,
+                estado: e.target.value === "true"
+              })
+          }
+            className="input"
+        >
+            <option value="true">Activo</option>
+            <option value="false">Inactivo</option>
+          </select>
+          </label>
+
 
         <div className="button-group">
           <button type="submit" className="btn">Guardar Cambios</button>

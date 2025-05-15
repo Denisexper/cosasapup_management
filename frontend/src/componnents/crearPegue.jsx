@@ -20,7 +20,7 @@ function CrearPegue() {
     const { name, value } = e.target;
     setFormData({
       ...formData,
-      [name]: value,
+      [name]: name === "estado" ? value === "true" : value
     });
   };
 
