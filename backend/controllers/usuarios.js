@@ -103,3 +103,5 @@ class usuariosControllers {
 
     }
 }
+
+export default usuariosControllers;

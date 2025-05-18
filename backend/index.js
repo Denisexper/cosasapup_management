@@ -1,5 +1,6 @@
 import connection from "./connection/connection.js";
 import peguesRoutes from "./routes/peguesComunidades.js"
+import usuariosRoutes from "./routes/usuarios.js"
 import express from "express"
 import cors from "cors"
 
@@ -18,3 +19,4 @@ app.listen(port, () => {
 connection();
 
 app.use("/api",peguesRoutes);
+app.use("/app",usuariosRoutes);
