@@ -1,5 +1,5 @@
 import usuarios from "../models/usuarios.js";
-
+import bcrypt from "bcrypt"
 
 class loginUsuarios {
     
@@ -13,8 +13,10 @@ class loginUsuarios {
                 return res.status(401).send({ message: "usuario o contraseña incorrectos"})
             }
 
-            if(usuario.contraseña !== contraseña){
-                return res.status(401).send({message: "usuario o contraseña incorrectos"});
+            const isValid = await bcrypt.compare(contraseña, usuario.contraseña)
+
+            if(!isValid){
+                return res.status(401).send({message: "usuario o contraseña incorrecta"})
             }
 
             res.status(200).send({

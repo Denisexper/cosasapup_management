@@ -1,26 +1,43 @@
 import usuarios from "../models/usuarios.js"
+import bcrypt from "bcrypt"
 
 class usuariosControllers {
 
-    async crearUsuario (req, res) {
-        try {
-            
-            const {nombre, correo, contraseña } = req.body;
+            async crearUsuario (req, res) {
+                try {
+                    
+                    const {nombre, correo, contraseña } = req.body;
 
-            const usuario = await usuarios.create({nombre, correo, contraseña});
+                    if(!nombre || !correo || !contraseña){
+                        return res.status(400).send({message: "todos los campos son obligatorios"});
+                    }
+                    
+                    const usuarioExiste = await usuarios.findOne({correo})
+                    
+                    if(usuarioExiste){
+                        return res.status(400).send({message: "el correo ya existe"});
+                    }
 
-            res.status(200).send({
-                message: "usuario creado con exito",
-                usuario
-            })
-        } catch (error) {
-            
-            res.status(500).send({
-                message: "Error creando usuario",
-                error: error.message
-            })
-        }
-    }
+                    const hasContraseña = await bcrypt.hash(contraseña, 10);
+
+                    const usuario = await usuarios.create({
+                        nombre,
+                        correo,
+                        contraseña: hasContraseña 
+                    })
+
+                    res.status(200).send({
+                        message: "usuario creado con exito",
+                        usuario
+                    })
+                } catch (error) {
+                    
+                    res.status(500).send({
+                        message: "Error creando usuario",
+                        error: error.message
+                    })
+                }
+            }               
 
     async obtenerUsuarios (req, res) {
         try {
