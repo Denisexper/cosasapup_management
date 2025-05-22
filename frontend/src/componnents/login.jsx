@@ -1,3 +1,4 @@
+import "./login.css"
 import { useNavigate } from "react-router-dom";
 import { useState } from "react"
 
@@ -58,7 +59,7 @@ function Login () {
             name="correo"
             value={loginData.correo}
             onChange={handleChange}
-            className="input"
+            className="input-correo"
             placeholder="correo electronico"
             required
             />
@@ -67,13 +68,13 @@ function Login () {
             name="contraseña"
             placeholder="contraseña"
             onChange={handleChange}
-            className="input"
+            className="input-contraseña"
             required
             />
 
             {error && <p className="error">{error}</p>}
 
-            <button type="submit">Ingresar</button>
+            <button className="btn-login" type="submit">Ingresar</button>
 
             </form>
         </div>
