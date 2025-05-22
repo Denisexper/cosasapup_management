@@ -62,7 +62,7 @@ function CrearPegue() {
   };
 
   const handleLis = () => {
-    navigate("/")
+    navigate("/dashboard")
   }
 
   return (
