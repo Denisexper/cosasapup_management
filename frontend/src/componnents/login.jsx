@@ -34,7 +34,9 @@ function Login () {
             });
 
             if(!response.ok){
+
                 throw new Error("Credenciales invalidas")
+
             }
 
             const data = await response.json();
@@ -49,6 +51,7 @@ function Login () {
     }
 
     return (
+        
         <div className="login-container">
 
             <form onSubmit={handleSubmit}>

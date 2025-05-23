@@ -25,11 +25,26 @@ function CrearPegue() {
   };
 
   const handleSubmit = async (e) => {
+
     e.preventDefault();
+
+      // Verificar si algún campo está vacío
+    const camposVacios = Object.entries(formData).filter(
+      ([key, value]) => value === ""
+  );
+
+  if (camposVacios.length > 0) {
+    toast.error("Por favor, completa todos los campos antes de continuar.", {
+      duration: 5000, // 5 segundos para que el usuario pueda leerlo con calma
+    });
+    return; // Detener el envío
+  }
+
     console.log(formData);
 
     try {
       const response = await fetch("http://localhost:3000/api/crear-pegue", {
+
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -38,9 +53,11 @@ function CrearPegue() {
       });
 
       const data = await response.json();
+
       console.log(data);
 
       if (response.ok) {
+
         toast.success("Registro creado con éxito");
 
         setFormData({
@@ -53,15 +70,19 @@ function CrearPegue() {
         })
 
       } else {
+
         toast.error("Error creando registro");
       }
     } catch (error) {
+
       console.error(error);
+
       toast.error("Hubo un error en la conexión");
     }
   };
 
   const handleLis = () => {
+
     navigate("/dashboard")
   }
 
@@ -136,8 +157,8 @@ function CrearPegue() {
 
 
         <div className="button-group">
-          <button className="btn" onClick={handleSubmit}>Crear</button>
-          <button className="btn2" onClick={handleLis}>Volver</button>
+          <button className="btn" type="submit">Crear</button>
+          <button type="button" className="btn2" onClick={handleLis}>Volver</button>
         </div>
 
       </form>

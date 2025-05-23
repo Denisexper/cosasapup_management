@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { Toaster, toast } from 'sonner';
+import "./editar.css"
 
 function EditarPegue() {
   const { id } = useParams();
@@ -52,9 +53,13 @@ function EditarPegue() {
       if (!res.ok) throw new Error('No se pudo actualizar el pegue');
 
       toast.success('Pegue actualizado correctamente');
-      navigate('/'); // Redirige al listado después de editar
+
+      navigate('/dashboard'); 
+      // Redirige al listado después de editar
     } catch (error) {
+
       console.error(error);
+
       toast.error('Error al actualizar el pegue');
     }
   };
@@ -138,9 +143,9 @@ function EditarPegue() {
           </label>
 
 
-        <div className="button-group">
-          <button type="submit" className="btn">Guardar Cambios</button>
-          <button type="button" className="btn2" onClick={() => navigate('/')}>Cancelar</button>
+        <div className="editar-button-group">
+          <button type="submit" className="editar-btn">Guardar Cambios</button>
+          <button type="button" className="editar-btn2" onClick={() => navigate('/dashboard')}>Cancelar</button>
         </div>
       </form>
     </div>

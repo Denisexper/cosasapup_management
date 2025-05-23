@@ -10,6 +10,7 @@ class peguesControllers {
 
             const pegue = await pegues.create({comunidad, dueño, direccion, estado, codigo, pago});
 
+
             res.status(200).send({
                 message: "Registro creado correctamente",
                 pegue
