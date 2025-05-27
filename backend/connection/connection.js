@@ -1,6 +1,9 @@
+import dotenv from "dotenv"
 import mongoose from "mongoose";
 
-const url = "mongodb+srv://denis:FGIgxSiUaJKpOQI4@ddb.oljshlt.mongodb.net/COSASAPUP?retryWrites=true&w=majority&appName=DDB"
+dotenv.config();
+
+const url = process.env.CONNECTION_URL
 
 const conection = async () => {
     try {
