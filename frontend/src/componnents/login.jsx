@@ -1,87 +1,81 @@
-import "./login.css"
+import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { useState } from "react"
 
-function Login () {
+function Login() {
+  const [loginData, setLoginData] = useState({
+    correo: "",
+    contraseña: "",
+  });
 
-    const [loginData, setLoginData] = useState({
+  const navigate = useNavigate();
+  const [error, setError] = useState("");
 
-        correo : "",
-        contraseña : "",
-    });
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setLoginData({ ...loginData, [name]: value });
+  };
 
-    const navigate = useNavigate();
+  const handleSubmit = async (e) => {
+    e.preventDefault();
 
-    const [ error, setError ] = useState("")
-    
-    const handleChange = (e) => {
-        const {name, value} = e.target;
-        setLoginData({...loginData, [name]: value});
-    };
+    try {
+      const response = await fetch("http://localhost:3000/app/login", {
+        method: "POST",
+        headers: { "content-type": "application/json" },
+        body: JSON.stringify(loginData),
+      });
 
-    const handleSubmit = async (e) => {
+      if (!response.ok) {
+        throw new Error("Credenciales inválidas");
+      }
 
-        e.preventDefault();
-
-        try {
-            
-            const response = await fetch("http://localhost:3000/app/login", {
-                method: "POST",
-
-                headers:{"content-type":"application/json"},
-
-                body: JSON.stringify(loginData)
-            });
-
-            if(!response.ok){
-
-                throw new Error("Credenciales invalidas")
-
-            }
-
-            const data = await response.json();
-
-            navigate("/dashboard")
-
-        } catch (error) {
-            
-            setError(error.message)
-        };
-
+      const data = await response.json();
+      navigate("/dashboard");
+    } catch (error) {
+      setError(error.message);
     }
+  };
 
-    return (
-        
-        <div className="login-container">
+  return (
+    <div className="min-h-screen flex items-center justify-center bg-gray-900 text-white px-4">
+      <form
+        onSubmit={handleSubmit}
+        className="bg-gray-800 p-8 rounded-lg shadow-md w-full max-w-sm"
+      >
+        <h2 className="text-2xl font-bold mb-6 text-center">Iniciar Sesión</h2>
 
-            <form onSubmit={handleSubmit}>
+        <input
+          type="text"
+          name="correo"
+          value={loginData.correo}
+          onChange={handleChange}
+          placeholder="Correo electrónico"
+          required
+          className="w-full px-4 py-2 mb-4 rounded bg-gray-700 text-white border border-gray-600 focus:outline-none focus:ring-2 focus:ring-blue-500"
+        />
 
-            <h2>Iniciar Sesion</h2>
+        <input
+          type="password"
+          name="contraseña"
+          placeholder="Contraseña"
+          onChange={handleChange}
+          required
+          className="w-full px-4 py-2 mb-4 rounded bg-gray-700 text-white border border-gray-600 focus:outline-none focus:ring-2 focus:ring-blue-500"
+        />
 
-            <input type="text"
-            name="correo"
-            value={loginData.correo}
-            onChange={handleChange}
-            className="input-correo"
-            placeholder="correo electronico"
-            required
-            />
+        {error && (
+          <p className="text-red-500 text-sm mb-4 text-center">{error}</p>
+        )}
 
-            <input type="password" 
-            name="contraseña"
-            placeholder="contraseña"
-            onChange={handleChange}
-            className="input-contraseña"
-            required
-            />
-
-            {error && <p className="error">{error}</p>}
-
-            <button className="btn-login" type="submit">Ingresar</button>
-
-            </form>
-        </div>
-    )
+        <button
+          type="submit"
+          className="w-full bg-blue-600 hover:bg-blue-700 transition-colors text-white py-2 rounded font-semibold"
+        >
+          Ingresar
+        </button>
+      </form>
+    </div>
+  );
 }
 
 export default Login;

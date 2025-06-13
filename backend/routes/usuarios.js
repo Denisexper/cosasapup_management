@@ -9,6 +9,7 @@ const loginUser = new loginUsuarios;
 
 app.post("/crear-usuario", controllersUsuarios.crearUsuario);
 app.get("/obtener-usuarios", controllersUsuarios.obtenerUsuarios);
+app.delete("/eliminar/:id", controllersUsuarios.eliminarUsuario);
 
 //login
 app.post("/login", loginUser.login);
