@@ -2,7 +2,7 @@ import React from "react";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { toast, Toaster } from "sonner";
-import './CrearPegue.css';
+import { FaArrowLeft, FaSave } from "react-icons/fa";
 
 function CrearPegue() {
   const [formData, setFormData] = useState({
@@ -27,19 +27,16 @@ function CrearPegue() {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    // Verificar si algún campo está vacío
     const camposVacios = Object.entries(formData).filter(
       ([key, value]) => value === ""
     );
 
     if (camposVacios.length > 0) {
       toast.error("Por favor, completa todos los campos antes de continuar.", {
-        duration: 5000, // 5 segundos para que el usuario pueda leerlo con calma
+        duration: 5000,
       });
-      return; // Detener el envío
+      return;
     }
-
-    console.log(formData);
 
     try {
       const response = await fetch("http://localhost:3000/api/crear-pegue", {
@@ -52,11 +49,8 @@ function CrearPegue() {
 
       const data = await response.json();
 
-      console.log(data);
-
       if (response.ok) {
         toast.success("Registro creado con éxito");
-
         setFormData({
           comunidad: "",
           dueño: "",
@@ -74,96 +68,128 @@ function CrearPegue() {
     }
   };
 
-  const handleLis = () => {
+  const handleVolver = () => {
     navigate("/dashboard");
   };
 
   return (
-    <div className="flex justify-center items-center min-h-screen bg-gray-100">
-      <Toaster />
-      <div className="bg-white p-6 rounded-lg shadow-md w-full max-w-md">
-        <h1 className="text-2xl font-semibold text-gray-800 mb-6 text-center">Crear nuevo registro</h1>
-        <form onSubmit={handleSubmit} className="space-y-4">
-          <select
-            name="comunidad"
-            value={formData.comunidad}
-            onChange={handleChange}
-            className="block w-full px-4 py-3 border rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-gray-500"
-          >
-            <option value="">Selecciona una comunidad</option>
-            <option value="Zapatagua">Zapatagua</option>
-            <option value="El almidon">El almidon</option>
-            <option value="La Cajita">La Cajita</option>
-          </select>
+    <div className="container mx-auto p-8 font-sans bg-gray-50 min-h-screen">
+      <Toaster position="top-right" richColors />
+      <div className="max-w-2xl mx-auto">
+        <div className="mb-8">
+          <h1 className="text-3xl font-light text-gray-800 mb-2">Nuevo Registro de Pegue</h1>
+          <p className="text-gray-600">Complete todos los campos para crear un nuevo registro</p>
+        </div>
 
-          <input
-            type="text"
-            name="dueño"
-            value={formData.dueño}
-            onChange={handleChange}
-            placeholder="Nombre Dueño"
-            className="block w-full px-4 py-3 border rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-gray-500"
-          />
+        <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-6">
+          <form onSubmit={handleSubmit} className="space-y-5">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+              <div>
+                <label htmlFor="comunidad" className="block text-sm font-medium text-gray-700 mb-1 font-bold">Comunidad</label>
+                <select
+                  id="comunidad"
+                  name="comunidad"
+                  value={formData.comunidad}
+                  onChange={handleChange}
+                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-200 focus:border-blue-500 transition-all"
+                >
+                  <option value="">Seleccione comunidad</option>
+                  <option value="Zapatagua">Zapatagua</option>
+                  <option value="El almidon">El almidon</option>
+                  <option value="La Cajita">La Cajita</option>
+                </select>
+              </div>
 
-          <input
-            list="direcciones"
-            name="direccion"
-            value={formData.direccion}
-            onChange={handleChange}
-            placeholder="Dirección"
-            className="block w-full px-4 py-3 border rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-gray-500"
-          />
-          <datalist id="direcciones">
-            <option value="Zapatagua" />
-            <option value="El almidon" />
-            <option value="La Cajita" />
-          </datalist>
+              <div>
+                <label htmlFor="dueño" className="block text-sm font-medium text-gray-700 mb-1 font-bold">Dueño</label>
+                <input
+                  type="text"
+                  id="dueño"
+                  name="dueño"
+                  value={formData.dueño}
+                  onChange={handleChange}
+                  placeholder="Nombre del dueño"
+                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-200 focus:border-blue-500 transition-all"
+                />
+              </div>
 
-          <input
-            type="text"
-            name="codigo"
-            value={formData.codigo}
-            onChange={handleChange}
-            placeholder="Código Pegue"
-            className="block w-full px-4 py-3 border rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-gray-500"
-          />
+              <div>
+                <label htmlFor="direccion" className="block text-sm font-medium text-gray-700 mb-1 font-bold">Dirección</label>
+                <input
+                  list="direcciones"
+                  id="direccion"
+                  name="direccion"
+                  value={formData.direccion}
+                  onChange={handleChange}
+                  placeholder="Dirección completa"
+                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-200 focus:border-blue-500 transition-all"
+                />
+                <datalist id="direcciones">
+                  <option value="Zapatagua" />
+                  <option value="El almidon" />
+                  <option value="La Cajita" />
+                </datalist>
+              </div>
 
-          <input
-            type="text"
-            name="pago"
-            value={formData.pago}
-            onChange={handleChange}
-            placeholder="Pagos realizados"
-            className="block w-full px-4 py-3 border rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-gray-500"
-          />
+              <div>
+                <label htmlFor="codigo" className="block text-sm font-medium text-gray-700 mb-1 font-bold">Código</label>
+                <input
+                  type="text"
+                  id="codigo"
+                  name="codigo"
+                  value={formData.codigo}
+                  onChange={handleChange}
+                  placeholder="Código del pegue"
+                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-200 focus:border-blue-500 transition-all"
+                />
+              </div>
 
-          <select
-            name="estado"
-            value={formData.estado}
-            onChange={handleChange}
-            className="block w-full px-4 py-3 border rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-gray-500"
-          >
-            <option value="">Selecciona estado</option>
-            <option value={true}>Activo</option>
-            <option value={false}>Inactivo</option>
-          </select>
+              <div>
+                <label htmlFor="pago" className="block text-sm font-medium text-gray-700 mb-1 font-bold">Pagos</label>
+                <input
+                  type="text"
+                  id="pago"
+                  name="pago"
+                  value={formData.pago}
+                  onChange={handleChange}
+                  placeholder="Pagos realizados"
+                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-200 focus:border-blue-500 transition-all"
+                />
+              </div>
 
-          <div className="flex justify-between items-center">
-            <button
-              className="bg-gray-600 text-white py-2 px-6 rounded-md shadow-md hover:bg-gray-700 focus:outline-none transition-all"
-              type="submit"
-            >
-              Crear
-            </button>
-            <button
-              type="button"
-              className="bg-gray-400 text-white py-2 px-6 rounded-md shadow-md hover:bg-gray-500 focus:outline-none transition-all"
-              onClick={handleLis}
-            >
-              Volver
-            </button>
-          </div>
-        </form>
+              <div>
+                <label htmlFor="estado" className="block text-sm font-medium text-gray-700 mb-1 font-bold">Estado</label>
+                <select
+                  id="estado"
+                  name="estado"
+                  value={formData.estado}
+                  onChange={handleChange}
+                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-200 focus:border-blue-500 transition-all"
+                >
+                  <option value="">Seleccione estado</option>
+                  <option value={true}>Activo</option>
+                  <option value={false}>Inactivo</option>
+                </select>
+              </div>
+            </div>
+
+            <div className="flex justify-end space-x-3 pt-4 border-t border-gray-200">
+              <button
+                type="button"
+                onClick={handleVolver}
+                className="flex items-center px-4 py-2 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-100 transition-colors"
+              >
+                <FaArrowLeft className="mr-2" /> Volver
+              </button>
+              <button
+                type="submit"
+                className="flex items-center px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
+              >
+                <FaSave className="mr-2" /> Guardar Registro
+              </button>
+            </div>
+          </form>
+        </div>
       </div>
     </div>
   );
