@@ -4,6 +4,7 @@ import { Toaster, toast } from 'sonner';
 import { useNavigate } from 'react-router-dom';
 import { generarPDF } from '../reportes/peguesReportes.jsx';
 import { FaPlusCircle, FaFileAlt, FaEdit, FaTrashAlt, FaSearch, FaChevronLeft, FaChevronRight } from 'react-icons/fa';
+import { getToken } from '../utils/auth.js';
 
 function ListarPegues() {
   const [pegues, setPegues] = useState([]);
@@ -45,6 +46,7 @@ function ListarPegues() {
     try {
       const response = await fetch(`http://localhost:3000/api/eliminar-pegue/${id}`, {
         method: "DELETE",
+        headers: `Bearer ${getToken}`
       });
       if (!response.ok) {
         toast.error("Error eliminando registro");
@@ -288,4 +290,4 @@ function ListarPegues() {
   );
 }
 
-export default ListarPegues;
+export default ListarPegues

@@ -3,6 +3,7 @@ import { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { Toaster, toast } from 'sonner';
 import { FaSave, FaTimes, FaArrowLeft } from 'react-icons/fa';
+import { getToken } from '../utils/auth.js';
 
 function EditarPegue() {
   const { id } = useParams();
@@ -46,7 +47,9 @@ function EditarPegue() {
       const res = await fetch(`http://localhost:3000/api/editar-pegue/${id}`, {
         method: 'PUT',
         headers: {
+          
           'Content-Type': 'application/json'
+          
         },
         body: JSON.stringify(pegue)
       });

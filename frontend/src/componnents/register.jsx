@@ -1,49 +1,55 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { Toaster, toast } from "sonner";
-import { saveToken } from "../utils/auth.js";
+import { toast, Toaster } from "sonner";
+import { FaArrowLeft, FaUserPlus } from "react-icons/fa";
 
-function Login() {
-  const [loginData, setLoginData] = useState({
+function Register() {
+  const [formData, setFormData] = useState({
+    nombre: "",
     correo: "",
     contraseña: "",
   });
 
-  const navigate = useNavigate();
   const [isLoading, setIsLoading] = useState(false);
+  const navigate = useNavigate();
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setLoginData({ ...loginData, [name]: value });
+    setFormData(prev => ({ ...prev, [name]: value }));
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     setIsLoading(true);
 
+    const { nombre, correo, contraseña } = formData;
+
+    if (!nombre || !correo || !contraseña) {
+      toast.error("Por favor, completa todos los campos.");
+      setIsLoading(false);
+      return;
+    }
+
     try {
-      const response = await fetch("http://localhost:3000/app/login", {
+      const response = await fetch("http://localhost:3000/app/register", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(loginData),
+        body: JSON.stringify({ nombre, correo, contraseña }),
       });
 
-      if (!response.ok) {
-        throw new Error("Credenciales incorrectas");
-      }
-
       const data = await response.json();
-      toast.success("Inicio de sesión exitoso");
-      setTimeout(() => navigate("/dashboard"), 1000);
+
+      if (response.ok) {
+        toast.success("Usuario registrado con éxito.");
+        setTimeout(() => navigate("/"), 1000);
+      } else {
+        throw new Error(data.message || "Error al registrar el usuario.");
+      }
     } catch (error) {
-      toast.error(error.message || "Error al iniciar sesión");
+      toast.error(error.message || "Error en la conexión con el servidor.");
     } finally {
       setIsLoading(false);
     }
-  };
-
-  const handleGoToRegister = () => {
-    navigate("/register");
   };
 
   return (
@@ -65,10 +71,26 @@ function Login() {
 
           {/* Form Section */}
           <div className="p-8">
-            <h2 className="text-2xl font-bold text-gray-800 mb-1 text-center">Bienvenido</h2>
-            <p className="text-gray-600 text-sm text-center mb-6">Ingresa tus credenciales para continuar</p>
+            <h2 className="text-2xl font-bold text-gray-800 mb-1 text-center">Crear cuenta</h2>
+            <p className="text-gray-600 text-sm text-center mb-6">Completa el formulario para registrarte</p>
 
             <form onSubmit={handleSubmit} className="space-y-5">
+              <div>
+                <label htmlFor="nombre" className="block text-sm font-medium text-gray-700 mb-1">
+                  Nombre completo
+                </label>
+                <input
+                  type="text"
+                  id="nombre"
+                  name="nombre"
+                  value={formData.nombre}
+                  onChange={handleChange}
+                  placeholder="Tu nombre completo"
+                  required
+                  className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all"
+                />
+              </div>
+
               <div>
                 <label htmlFor="correo" className="block text-sm font-medium text-gray-700 mb-1">
                   Correo electrónico
@@ -77,7 +99,7 @@ function Login() {
                   type="email"
                   id="correo"
                   name="correo"
-                  value={loginData.correo}
+                  value={formData.correo}
                   onChange={handleChange}
                   placeholder="tu@correo.com"
                   required
@@ -93,26 +115,12 @@ function Login() {
                   type="password"
                   id="contraseña"
                   name="contraseña"
-                  value={loginData.contraseña}
+                  value={formData.contraseña}
                   onChange={handleChange}
                   placeholder="••••••••"
                   required
                   className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all"
                 />
-              </div>
-
-              <div className="flex items-center justify-between">
-                <label className="flex items-center text-sm text-gray-700">
-                  <input
-                    type="checkbox"
-                    className="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"
-                  />
-                  <span className="ml-2">Recordarme</span>
-                </label>
-
-                <a href="#" className="text-sm text-blue-600 hover:text-blue-500">
-                  ¿Olvidaste tu contraseña?
-                </a>
               </div>
 
               <button
@@ -135,20 +143,22 @@ function Login() {
                     Procesando...
                   </>
                 ) : (
-                  "Iniciar sesión"
+                  <>
+                    <FaUserPlus className="mr-2" /> Registrarse
+                  </>
                 )}
               </button>
             </form>
 
-            {/* Register Button */}
+            {/* Login Button */}
             <div className="mt-6 text-center">
               <p className="text-sm text-gray-600">
-                ¿No tienes una cuenta?{" "}
+                ¿Ya tienes una cuenta?{" "}
                 <button
-                  onClick={handleGoToRegister}
+                  onClick={() => navigate("/")}
                   className="text-blue-600 font-semibold hover:underline"
                 >
-                  Regístrate aquí
+                  Inicia sesión aquí
                 </button>
               </p>
             </div>
@@ -166,4 +176,4 @@ function Login() {
   );
 }
 
-export default Login;
+export default Register;

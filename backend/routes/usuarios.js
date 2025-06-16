@@ -13,6 +13,7 @@ app.delete("/eliminar/:id", controllersUsuarios.eliminarUsuario);
 
 //login
 app.post("/login", loginUser.login);
+app.post("/register", loginUser.register);
 
 export default app;
 

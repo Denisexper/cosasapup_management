@@ -7,6 +7,7 @@ import CrearPegue from './componnents/crearPegue';
 import ListarPegues from './componnents/ListarPegues.jsx';
 import EditarPegue from './componnents/Editar.jsx';
 import Login from './componnents/login.jsx';
+import Register from './componnents/register.jsx';
 
 createRoot(document.getElementById('root')).render(
   <StrictMode>
@@ -16,6 +17,7 @@ createRoot(document.getElementById('root')).render(
       <Route path="/" element={<Login />} />
       <Route path="/dashboard" element={<ListarPegues />} />
       <Route path="/editar/:id" element={<EditarPegue />} />
+      <Route path="/register" element={<Register />} />
       </Routes>
     </BrowserRouter>
   </StrictMode>,
