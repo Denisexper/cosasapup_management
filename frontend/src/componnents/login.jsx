@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Toaster, toast } from "sonner";
-import { saveToken } from "../utils/auth.js";
 
 function Login() {
   const [loginData, setLoginData] = useState({
@@ -33,8 +32,13 @@ function Login() {
       }
 
       const data = await response.json();
+
+      localStorage.setItem("token", data.token);
+
       toast.success("Inicio de sesión exitoso");
+
       setTimeout(() => navigate("/dashboard"), 1000);
+      
     } catch (error) {
       toast.error(error.message || "Error al iniciar sesión");
     } finally {

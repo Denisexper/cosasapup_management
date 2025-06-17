@@ -1,5 +1,5 @@
 import jwt from "jsonwebtoken"
-import { DiCelluloid } from "react-icons/di"
+
 
 const SECRET_KEY = process.env.SECRET_KEY
 
@@ -13,6 +13,7 @@ const auth = (req, res, next) => {
         //verificamos el encabezado de la authorization
 
         if (!autHeader || !autHeader.startsWith("Bearer ")) {
+
             return res.status(401).json({ message: "No se proporcionó el token" });
         }
 

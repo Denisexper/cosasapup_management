@@ -4,7 +4,7 @@ import { Toaster, toast } from 'sonner';
 import { useNavigate } from 'react-router-dom';
 import { generarPDF } from '../reportes/peguesReportes.jsx';
 import { FaPlusCircle, FaFileAlt, FaEdit, FaTrashAlt, FaSearch, FaChevronLeft, FaChevronRight } from 'react-icons/fa';
-import { getToken } from '../utils/auth.js';
+
 
 function ListarPegues() {
   const [pegues, setPegues] = useState([]);
@@ -18,15 +18,34 @@ function ListarPegues() {
   useEffect(() => {
     const fetchPegues = async () => {
       try {
-        const response = await fetch("http://localhost:3000/api/obtener-pegues");
+
+        const token = localStorage.getItem("token")
+
+        //verificamos y redirigimos al login si no hay token
+        if(!token){
+
+          navigate("/")
+        }
+
+        const response = await fetch("http://localhost:3000/api/obtener-pegues", {
+          headers: {
+            "Authorization": `Bearer ${token}`
+          }
+        });
+
         const data = await response.json();
+
         if (data && data.todosPegues && data.todosPegues.length > 0) {
+
           setPegues(data.todosPegues);
+
         } else {
-          toast.error("No se encontraron registros");
+
+          console.error("error desconocido");
         }
       } catch (error) {
         console.error(error);
+
         toast.error("Error al obtener los registros");
       }
     };
@@ -46,7 +65,6 @@ function ListarPegues() {
     try {
       const response = await fetch(`http://localhost:3000/api/eliminar-pegue/${id}`, {
         method: "DELETE",
-        headers: `Bearer ${getToken}`
       });
       if (!response.ok) {
         toast.error("Error eliminando registro");

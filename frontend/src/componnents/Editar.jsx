@@ -3,7 +3,7 @@ import { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { Toaster, toast } from 'sonner';
 import { FaSave, FaTimes, FaArrowLeft } from 'react-icons/fa';
-import { getToken } from '../utils/auth.js';
+
 
 function EditarPegue() {
   const { id } = useParams();
@@ -18,14 +18,31 @@ function EditarPegue() {
   });
 
   useEffect(() => {
+
     const obtenerPegue = async () => {
+
       try {
+
+        const token = localStorage.getItem("token")
+
+        if(!token){
+
+          navigate("/")
+          
+        }
+
         const res = await fetch(`http://localhost:3000/api/obtener-pegue/${id}`);
+
         if (!res.ok) throw new Error('No se pudo obtener el pegue');
+
         const data = await res.json();
+
         setPegue(data.pegue);
+
       } catch (error) {
+
         console.error(error);
+
         toast.error('Error al cargar los datos del pegue');
       }
     };
