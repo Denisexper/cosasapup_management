@@ -3,6 +3,7 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { toast, Toaster } from "sonner";
 import { FaArrowLeft, FaSave } from "react-icons/fa";
+import { useEffect } from "react";
 
 function CrearPegue() {
   const [formData, setFormData] = useState({
@@ -15,6 +16,18 @@ function CrearPegue() {
   });
 
   const navigate = useNavigate();
+
+  useEffect(() => {
+
+    const token = localStorage.getItem("token")
+
+    if(!token){
+
+      navigate("/")
+      toast.error("por favor inicia sesion")
+
+    }
+  }, [])
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -38,11 +51,22 @@ function CrearPegue() {
       return;
     }
 
+    const token = localStorage.getItem("token")
+
+    if(!token){
+
+      navigate("/")
+
+      return
+    }
+
     try {
+
       const response = await fetch("http://localhost:3000/api/crear-pegue", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
+          "Authorization": `Bearer ${token}`
         },
         body: JSON.stringify(formData),
       });

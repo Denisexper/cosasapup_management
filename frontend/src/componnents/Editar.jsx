@@ -23,15 +23,26 @@ function EditarPegue() {
 
       try {
 
+        //obtenemos el token
         const token = localStorage.getItem("token")
 
+        //validamos si no tiene token lo mandamos a al login
         if(!token){
 
           navigate("/")
-          
+
+          return
         }
 
-        const res = await fetch(`http://localhost:3000/api/obtener-pegue/${id}`);
+        const res = await fetch(`http://localhost:3000/api/obtener-pegue/${id}`,{
+          headers: {
+
+            //mandamos obtenemos el token
+            "Authorization": `Bearer ${token}`,
+
+            "Content-Type": "application/json"
+          }
+        });
 
         if (!res.ok) throw new Error('No se pudo obtener el pegue');
 
@@ -59,13 +70,27 @@ function EditarPegue() {
   };
 
   const handleSubmit = async (e) => {
+
     e.preventDefault();
+
     try {
+
+      //obtenemos el token
+      const token = localStorage.getItem("token")
+
+      if(!token){
+
+        navigate("/")
+        return
+      }
+
       const res = await fetch(`http://localhost:3000/api/editar-pegue/${id}`, {
         method: 'PUT',
         headers: {
           
-          'Content-Type': 'application/json'
+          "Authorization": `Bearer ${token}`,
+          
+          "content-Type": "application/json"
           
         },
         body: JSON.stringify(pegue)

@@ -22,7 +22,7 @@ function ListarPegues() {
         const token = localStorage.getItem("token")
 
         //verificamos y redirigimos al login si no hay token
-        if(!token){
+        if (!token) {
 
           navigate("/")
         }
@@ -61,22 +61,59 @@ function ListarPegues() {
     navigate(`/Editar/${id}`);
   };
 
-  const handleDelete = async (id) => {
-    try {
-      const response = await fetch(`http://localhost:3000/api/eliminar-pegue/${id}`, {
-        method: "DELETE",
-      });
-      if (!response.ok) {
-        toast.error("Error eliminando registro");
-        return;
-      }
-      setPegues(pegues.filter(pegue => pegue._id !== id));
-      toast.success("Registro eliminado correctamente");
-    } catch (error) {
-      console.error("Error eliminando el registro", error);
-      toast.error("Error al eliminar");
-    }
+  const handleDelete = (id) => {
+    toast.custom((t) => (
+      <div className="bg-white rounded-lg shadow-md p-4 w-80 border border-gray-200">
+        <h2 className="text-gray-900 font-semibold text-base mb-2">¿Eliminar registro?</h2>
+        <p className="text-gray-600 text-sm mb-4">Esta acción no se puede deshacer. ¿Deseas continuar?</p>
+        <div className="flex justify-end gap-3">
+          <button
+            onClick={() => toast.dismiss(t)}
+            className="px-4 py-1 rounded-md border border-gray-300 text-gray-700 hover:bg-gray-100 text-sm"
+          >
+            Cancelar
+          </button>
+          <button
+            onClick={async () => {
+              toast.dismiss(t); // Cierra el modal
+
+              const token = localStorage.getItem("token")
+
+              if(!token){
+
+                navigate("/")
+                return
+              }
+
+              try {
+                const response = await fetch(`http://localhost:3000/api/eliminar-pegue/${id}`, {
+                  method: "DELETE",
+                  headers: {
+                    "Authorization": `Bearer ${token}`
+                  }
+                });
+
+                if (!response.ok) {
+                  toast.error("Error eliminando registro");
+                  return;
+                }
+
+                setPegues((prev) => prev.filter((pegue) => pegue._id !== id));
+                toast.success("Registro eliminado correctamente");
+              } catch (error) {
+                console.error("Error eliminando el registro", error);
+                toast.error("Error al eliminar");
+              }
+            }}
+            className="px-4 py-1 rounded-md bg-red-600 text-white hover:bg-red-700 text-sm"
+          >
+            Eliminar
+          </button>
+        </div>
+      </div>
+    ));
   };
+
 
   const peguesFiltrados = pegues.filter(p => {
     const comunidadMatch = comunidadFiltro ? p.comunidad === comunidadFiltro : true;
@@ -282,8 +319,8 @@ function ListarPegues() {
                         key={i}
                         onClick={() => paginate(i + 1)}
                         className={`relative inline-flex items-center px-4 py-2 border text-sm font-medium ${currentPage === i + 1
-                            ? 'z-10 bg-blue-50 border-blue-500 text-blue-600'
-                            : 'bg-white border-gray-300 text-gray-500 hover:bg-gray-50'
+                          ? 'z-10 bg-blue-50 border-blue-500 text-blue-600'
+                          : 'bg-white border-gray-300 text-gray-500 hover:bg-gray-50'
                           }`}
                       >
                         {i + 1}

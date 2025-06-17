@@ -63,7 +63,7 @@ function Login() {
                 alt="Logo de la empresa"
                 className="h-12 w-12 object-contain"
               />
-              <h1 className="text-2xl font-bold text-white">PeguesApp</h1>
+              <h1 className="text-2xl font-bold text-white">COSASAPUP</h1>
             </div>
           </div>
 
