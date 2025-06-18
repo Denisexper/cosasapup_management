@@ -6,8 +6,11 @@ import { FaSave, FaTimes, FaArrowLeft } from 'react-icons/fa';
 
 
 function EditarPegue() {
+
   const { id } = useParams();
+
   const navigate = useNavigate();
+  
   const [pegue, setPegue] = useState({
     comunidad: '',
     dueño: '',

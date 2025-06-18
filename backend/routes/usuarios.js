@@ -1,13 +1,14 @@
 import express from "express";
 import usuariosControllers from "../controllers/usuarios.js";
 import loginUsuarios from "../controllers/login.js";
-
+import auth from "../middlewares/auth.js"
 const app = express.Router();
 
 const controllersUsuarios = new usuariosControllers;
 const loginUser = new loginUsuarios;
 
 app.post("/crear-usuario", controllersUsuarios.crearUsuario);
+app.get("/obtener-usuario/:id", controllersUsuarios.obtenerusuario)
 app.get("/obtener-usuarios", controllersUsuarios.obtenerUsuarios);
 app.delete("/eliminar/:id", controllersUsuarios.eliminarUsuario);
 
