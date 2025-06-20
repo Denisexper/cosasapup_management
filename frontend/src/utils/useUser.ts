@@ -1,8 +1,14 @@
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 
+interface User {
+  _id: string;
+  nombre: string;
+  correo: string;
+}
+
 export function useUser() {
-  const [user, setUser] = useState(null);
+  const [user, setUser] = useState<User | null>(null);
   const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
 
@@ -37,7 +43,7 @@ export function useUser() {
           throw new Error("No se pudo obtener la información del usuario.");
         }
 
-        const data = await response.json();
+        const data: { usuario: User } = await response.json();
         setUser(data.usuario);
 
       } catch (error) {

@@ -2,7 +2,7 @@ import React from "react";
 import { useNavigate } from "react-router-dom";
 import { Toaster, toast } from "sonner";
 import Header from './Header.jsx';
-import { useUser } from '../utils/useUser';
+import { useUser } from '../utils/useUser.ts';
 import { FaArrowLeft } from "react-icons/fa";
 
 function PerfilUsuario() {
