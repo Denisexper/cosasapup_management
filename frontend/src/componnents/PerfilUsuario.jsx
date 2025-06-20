@@ -1,116 +1,99 @@
-import React, { useEffect, useState } from "react";
-import { useNavigate, useParams } from "react-router-dom"; // Import useParams
+import React from "react";
+import { useNavigate } from "react-router-dom";
 import { Toaster, toast } from "sonner";
+import Header from './Header.jsx';
+import { useUser } from '../utils/useUser';
+import { FaArrowLeft } from "react-icons/fa";
 
 function PerfilUsuario() {
-  const { id } = useParams(); // Use useParams to get the ID from the URL
-
   const navigate = useNavigate();
-
-  const [user, setUser] = useState({
-    nombre: "",
-    correo: "",
-  });
-
-  useEffect(() => {
-    const obtenerUsuario = async () => {
-      try {
-        // Obtenemos el token
-        const token = localStorage.getItem("token");
-
-        // Validamos token
-        if (!token) {
-          navigate("/");
-          return;
-        }
-
-        const response = await fetch(
-          `http://localhost:3000/api/obtener-usuario/${id}`,
-          {
-            headers: {
-              Authorization: `Bearer ${token}`,
-              "Content-Type": "application/json",
-            },
-          }
-        );
-
-        if (!response.ok)
-          throw new Error("No se pudo obtener la información del usuario.");
-
-        const data = await response.json();
-        setUser(data.user);
-      } catch (error) {
-        console.error("Error al cargar los datos del usuario:", error);
-        toast.error("Error al cargar los datos del usuario.");
-      }
-    };
-
-    if (id) { // Only fetch if ID is available
-      obtenerUsuario();
-    }
-  }, [id, navigate]); // Add navigate to dependency array
+  const { user, loading } = useUser();
 
   const handleLogout = () => {
-    localStorage.removeItem("token"); // Remove the token
-    toast.success("Sesión cerrada correctamente.");
-    navigate("/"); // Redirect to login or home page
+    localStorage.removeItem("token");
+    toast.success("Sesión cerrada correctamente");
+    navigate("/");
   };
 
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setUser((prev) => ({
-      ...prev,
-      [name]: value,
-    }));
+  const handleVolver = () => {
+    navigate("/dashboard");
   };
 
-  return (
-    <div className="min-h-screen bg-gray-100 flex items-center justify-center p-4">
-      <Toaster position="top-right" richColors />
-      <div className="bg-white p-8 rounded-lg shadow-lg max-w-sm w-full">
-        <h2 className="text-3xl font-bold text-center text-gray-800 mb-6">
-          Perfil de Usuario
-        </h2>
-
-        <div className="space-y-4">
-          <div>
-            <label htmlFor="nombre" className="block text-sm font-medium text-gray-700">
-              Nombre
-            </label>
-            <input
-              type="text"
-              id="nombre"
-              name="nombre"
-              value={user.nombre}
-              onChange={handleChange}
-              className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
-              readOnly // Make it read-only for profile viewing
-            />
-          </div>
-
-          <div>
-            <label htmlFor="correo" className="block text-sm font-medium text-gray-700">
-              Correo Electrónico
-            </label>
-            <input
-              type="email"
-              id="correo"
-              name="correo"
-              value={user.correo}
-              onChange={handleChange}
-              className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
-              readOnly // Make it read-only for profile viewing
-            />
+  if (loading) {
+    return (
+      <div className="min-h-screen bg-gray-100">
+        <Header />
+        <div className="container mx-auto p-8 font-sans">
+          <div className="max-w-2xl mx-auto">
+            <div className="animate-pulse">
+              <div className="h-8 bg-gray-200 rounded mb-6 w-1/3"></div>
+              <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-6 space-y-5">
+                <div className="h-4 bg-gray-200 rounded w-1/4"></div>
+                <div className="h-10 bg-gray-200 rounded"></div>
+                <div className="h-4 bg-gray-200 rounded w-1/4"></div>
+                <div className="h-10 bg-gray-200 rounded"></div>
+              </div>
+            </div>
           </div>
         </div>
+      </div>
+    );
+  }
 
-        <div className="mt-6">
-          <button
-            onClick={handleLogout}
-            className="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-red-600 hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500"
-          >
-            Cerrar Sesión
-          </button>
+  return (
+    <div className="min-h-screen bg-gray-100">
+      <Header />
+      <div className="container mx-auto p-8 font-sans">
+        <Toaster position="top-right" richColors />
+        <div className="max-w-2xl mx-auto">
+          <div className="mb-8">
+            <h1 className="text-3xl font-light text-gray-800 mb-2">Perfil de Usuario</h1>
+            <p className="text-gray-600">Aquí puedes ver tu información personal.</p>
+          </div>
+
+          <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-6">
+            <div className="space-y-5">
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1 font-bold">
+                  Nombre
+                </label>
+                <input
+                  type="text"
+                  value={user?.nombre || ''}
+                  readOnly
+                  className="w-full px-4 py-2 border border-gray-300 rounded-lg bg-gray-50 cursor-not-allowed"
+                />
+              </div>
+
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1 font-bold">
+                  Correo Electrónico
+                </label>
+                <input
+                  type="email"
+                  value={user?.correo || ''}
+                  readOnly
+                  className="w-full px-4 py-2 border border-gray-300 rounded-lg bg-gray-50 cursor-not-allowed"
+                />
+              </div>
+            </div>
+
+            <div className="flex justify-between items-center mt-6 pt-4 border-t border-gray-200">
+              <button
+                onClick={handleVolver}
+                className="flex items-center py-2 px-4 bg-gray-200 hover:bg-gray-300 text-gray-800 rounded-lg font-medium transition-colors"
+              >
+                <FaArrowLeft className="mr-2" />
+                Volver
+              </button>
+              <button
+                onClick={handleLogout}
+                className="py-2 px-4 bg-red-600 hover:bg-red-700 text-white rounded-lg font-medium transition-colors"
+              >
+                Cerrar Sesión
+              </button>
+            </div>
+          </div>
         </div>
       </div>
     </div>
