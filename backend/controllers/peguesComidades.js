@@ -93,7 +93,8 @@ class peguesControllers {
             const eliminado = await pegues.findByIdAndDelete(id)
 
             res.status(200).send({
-                message: "Registro actulizado correctamente"
+                message: "Registro actulizado correctamente",
+                eliminado
             })
         } catch (error) {
             

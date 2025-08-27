@@ -13,12 +13,14 @@ class loginUsuarios {
             const usuario = await usuarios.findOne({correo})
 
             if(!usuario){
+
                 return res.status(401).send({ message: "usuario o contraseña incorrectos"})
             }
 
             const isValid = await bcrypt.compare(contraseña, usuario.contraseña)
 
             if(!isValid){
+                
                 return res.status(401).send({message: "usuario o contraseña incorrecta"})
             }
 

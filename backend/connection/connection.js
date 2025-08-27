@@ -8,7 +8,7 @@ const url = process.env.CONNECTION_URL
 const conection = async () => {
     try {
         
-        const conn = await mongoose.connect(url)
+        await mongoose.connect(url)
 
         console.log("conectado a la base de datos")
 
