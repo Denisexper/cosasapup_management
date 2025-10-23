@@ -9,7 +9,8 @@ const app = express();
 app.use(express.json());
 
 app.use(cors({
-    origin: ["http://localhost:5173", "https://cosasapup-management-pr17.vercel.app", "https://cosasapup-management-pr17-git-main-denisexpers-projects.vercel.app"],
+    origin: ["http://localhost:5173", "https://cosasapup-management-pr17.vercel.app"
+        , "https://cosasapup-management-pr17-git-main-denisexpers-projects.vercel.app", "https://cosasapup-management-pr17-43dvmq5by-denisexpers-projects.vercel.app"],
     methods: ["GET", "POST", "PUT", "DELETE"],
     credentials: true
 }));
