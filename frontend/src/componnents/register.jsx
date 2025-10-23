@@ -4,6 +4,9 @@ import { toast, Toaster } from "sonner";
 import { FaArrowLeft, FaUserPlus } from "react-icons/fa";
 
 function Register() {
+
+  const backend = import.meta.env.VITE_API_URL
+
   const [formData, setFormData] = useState({
     nombre: "",
     correo: "",
@@ -31,7 +34,7 @@ function Register() {
     }
 
     try {
-      const response = await fetch("http://localhost:3000/app/register", {
+      const response = await fetch(`${backend}/usuarios/register`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ nombre, correo, contraseña }),

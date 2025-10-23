@@ -2,7 +2,7 @@ import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import logo from '../logos/logo.png';
 import { FaUserCircle } from 'react-icons/fa';
-import { useUser } from '../utils/useUser.js';
+
 
 function Header() {
   const navigate = useNavigate();

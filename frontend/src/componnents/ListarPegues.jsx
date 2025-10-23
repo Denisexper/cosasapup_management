@@ -8,6 +8,9 @@ import Header from './Header.jsx';
 
 
 function ListarPegues() {
+
+  const backend = import.meta.env.VITE_API_URL
+
   const [pegues, setPegues] = useState([]);
   const [comunidadFiltro, setComunidadFiltro] = useState('');
   const [estadoFiltro, setEstadoFiltro] = useState('');
@@ -28,7 +31,7 @@ function ListarPegues() {
           navigate("/")
         }
 
-        const response = await fetch("http://localhost:3000/api/obtener-pegues", {
+        const response = await fetch(`${backend}/pegues/obtener-pegues`, {
           headers: {
             "Authorization": `Bearer ${token}`
           }
@@ -87,7 +90,7 @@ function ListarPegues() {
               }
 
               try {
-                const response = await fetch(`http://localhost:3000/api/eliminar-pegue/${id}`, {
+                const response = await fetch(`${backend}/eliminar-pegue/${id}`, {
                   method: "DELETE",
                   headers: {
                     "Authorization": `Bearer ${token}`

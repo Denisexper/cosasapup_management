@@ -6,7 +6,11 @@ import { FaArrowLeft, FaSave } from "react-icons/fa";
 import { useEffect } from "react";
 import Header from './Header.jsx';
 
+
 function CrearPegue() {
+
+  const backend = import.meta.env.VITE_API_URL
+
   const [formData, setFormData] = useState({
     comunidad: "",
     dueño: "",
@@ -63,7 +67,7 @@ function CrearPegue() {
 
     try {
 
-      const response = await fetch("http://localhost:3000/api/crear-pegue", {
+      const response = await fetch(`${backend}/pegues/crear-pegue`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

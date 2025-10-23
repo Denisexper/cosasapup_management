@@ -3,6 +3,9 @@ import { useNavigate } from 'react-router-dom';
 import { FaUser } from 'react-icons/fa';
 
 function UserAvatar() {
+
+  const backend = import.meta.env.VITE_API_URL
+
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
@@ -22,7 +25,7 @@ function UserAvatar() {
         const userId = payload.id;
 
         const response = await fetch(
-          `http://localhost:3000/app/obtener-usuario/${userId}`,
+          `${backend}/usuarios/obtener-usuario/${userId}`,
           {
             headers: {
               Authorization: `Bearer ${token}`,

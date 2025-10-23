@@ -8,6 +8,8 @@ import Header from './Header.jsx';
 
 function EditarPegue() {
 
+  const backend = import.meta.env.VITE_API_URL
+  
   const { id } = useParams();
 
   const navigate = useNavigate();
@@ -38,7 +40,7 @@ function EditarPegue() {
           return
         }
 
-        const res = await fetch(`http://localhost:3000/api/obtener-pegue/${id}`,{
+        const res = await fetch(`${backend}/pegues/obtener-pegue/${id}`,{
           headers: {
 
             //mandamos obtenemos el token
@@ -88,7 +90,7 @@ function EditarPegue() {
         return
       }
 
-      const res = await fetch(`http://localhost:3000/api/editar-pegue/${id}`, {
+      const res = await fetch(`${backend}/pegues/editar-pegue/${id}`, {
         method: 'PUT',
         headers: {
           
