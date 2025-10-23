@@ -64,7 +64,7 @@ function Register() {
           <div className="bg-blue-600 py-6 px-4 flex justify-center">
             <div className="flex items-center space-x-2">
               <img 
-                src="src/logos/logo.png"
+                src="/src/logos/logo.png"
                 alt="Logo de la empresa"
                 className="h-12 w-12 object-contain"
               />
