@@ -18,5 +18,5 @@ app.listen(port, () => {
 
 connection();
 
-app.use("/api",peguesRoutes);
-app.use("/app",usuariosRoutes);
+app.use("/app/pegues",peguesRoutes);
+app.use("/app/usuarios",usuariosRoutes);
