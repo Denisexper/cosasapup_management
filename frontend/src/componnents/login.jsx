@@ -1,6 +1,7 @@
 import React, { useState} from "react";
 import { useNavigate } from "react-router-dom";
 import { Toaster, toast } from "sonner";
+import logo from "/src/logos/logo.png"
 
 function Login() {
 
@@ -62,7 +63,7 @@ function Login() {
           <div className="bg-blue-600 py-6 px-4 flex justify-center">
             <div className="flex items-center space-x-2">
               <img 
-                src="/src/logos/logo.png"
+                src={logo}
                 alt="Logo de la empresa"
                 className="h-12 w-12 object-contain"
               />
