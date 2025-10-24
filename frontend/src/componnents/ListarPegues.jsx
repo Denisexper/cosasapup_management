@@ -90,7 +90,7 @@ function ListarPegues() {
               }
 
               try {
-                const response = await fetch(`${backend}/eliminar-pegue/${id}`, {
+                const response = await fetch(`${backend}/pegues/eliminar-pegue/${id}`, {
                   method: "DELETE",
                   headers: {
                     "Authorization": `Bearer ${token}`

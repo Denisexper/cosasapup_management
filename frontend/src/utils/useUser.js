@@ -2,6 +2,9 @@ import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 export function useUser() {
+
+  const backend = import.meta.env.VITE_API_URL
+
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
@@ -25,7 +28,7 @@ export function useUser() {
         }
 
         const response = await fetch(
-          `http://localhost:3000/app/obtener-usuario/${userId}`,
+          `${backend}/usuarios/obtener-usuario/${userId}`,
           {
             headers: {
               Authorization: `Bearer ${token}`,
