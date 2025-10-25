@@ -16,7 +16,7 @@ function ListarPegues() {
   const [estadoFiltro, setEstadoFiltro] = useState('');
   const [currentPage, setCurrentPage] = useState(1);
   const [searchTerm, setSearchTerm] = useState('');
-  const itemsPerPage = 10; // Mostrar 10 registros por página
+  const itemsPerPage = 20; // Mostrar 10 registros por página
   const navigate = useNavigate();
 
   useEffect(() => {
